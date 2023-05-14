@@ -1,7 +1,8 @@
-const { error } = require("console");
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
+const userRoutes = require("./routes/user");
+
+const app = express();
 
 async function connectDB() {
   try {
@@ -13,31 +14,23 @@ async function connectDB() {
   }
 }
 
-const main = () => {
-  connectDB();
-  console.log(`Your port is ${process.env.PORT}`);
-};
-
 try {
-  main();
+  connectDB();
 } catch (error) {
   console.log(error);
 }
 
+//body parser
+app.use(express.json());
+
+//CORS
 app.use((req, res, next) => {
-  console.log("response successfully");
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   next();
 });
 
-app.use((req, res, next) => {
-  res.status(201);
-  next();
-});
-
-app.use((req, res, next) => {
-  res.json({ message: "My first response" });
-  // res.status(200).json({message : 'My first response'});
-  next();
-});
+app.use('/api/auth',userRoutes) ;
 
 module.exports = app;
