@@ -17,16 +17,19 @@ async function createUser(req, res, next) {
 }
 
 async function logUserIn(req, res, next) {
+
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).json({ error: new Error("User not found") });
+      return res.status(401).json({ error: new Error("Email or password is incorrect") });
     }
-    isPwdValid = await bcrypt.compare(req.body.password, user.password);
+    const isPwdValid = await bcrypt.compare(req.body.password, user.password);
     if (!isPwdValid) {
-      return res.status(401).json({ error: new Error("Incorrect Password") });
+      return res.status(401).json({ error: new Error("Email or password is incorrect") });
     }
-    token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, { expiresIn: "24h" });
+    const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, {
+      expiresIn: "24h",
+    });
     res.status(200).json({ userId: user._id, token: token });
   } catch (error) {
     res.status(500).json({ error: error });
