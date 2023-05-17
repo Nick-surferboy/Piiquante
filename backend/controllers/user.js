@@ -37,6 +37,7 @@ async function logUserIn(req, res, next) {
       await redis.set(user.email, ++userAttempts, "ex", process.env.SAME_USER_ATTEMPTS_DURATION);
       return res.status(401).json({ error: new Error("Email or password is incorrect") });
     }
+
     const token = jwt.sign({ userId: user._id }, process.env.TOKEN_KEY, {
       expiresIn: process.env.TOKEN_EXPIRATION,
     });
