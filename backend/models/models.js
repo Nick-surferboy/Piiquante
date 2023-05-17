@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require('mongoose-unique-validator') ;
+const mongodbErrorHandler = require('mongoose-mongodb-errors')
 
 const sauceSchema = mongoose.Schema({
   userId: { type: String, required: true },
@@ -24,6 +25,7 @@ const userSchema = mongoose.Schema({
       password: {type: String, required: true},
 });
 userSchema.plugin(uniqueValidator); 
+mongoose.plugin(mongodbErrorHandler);
 
 Sauce = mongoose.model('Sauce', sauceSchema) ; 
 User = mongoose.model('User', userSchema) ; 
