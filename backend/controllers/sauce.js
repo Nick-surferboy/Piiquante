@@ -45,7 +45,47 @@ async function getOneSauce(req, res, next) {
 
 async function like(req, res, next) {}
 
-async function updateOneSauce(req, res, next) {}
+async function updateOneSauce(req, res, next) {
+  try {
+    let sauce = new Sauce({ _id: req.params.id });
+    if (req.file) {
+      const url = req.protocol + "://" + req.get("host");
+      req.body.sauce = JSON.parse(req.body.sauce);
+      sauce = {
+        _id: req.params.id,
+        userId: req.body.sauce.userId,
+        name: req.body.sauce.name,
+        manufacturer: req.body.sauce.manufacturer,
+        description: req.body.sauce.description,
+        mainPepper: req.body.sauce.mainPepper,
+        imageUrl: url + "/images/" + req.file.filename,
+        heat: req.body.sauce.heat,
+        likes: req.body.sauce.likes,
+        dislikes: req.body.sauce.dislikes,
+        usersLiked: req.body.sauce.usersLiked,
+        usersDisliked: req.body.sauce.usersDisliked,
+      };
+    } else {
+      sauce = {
+        _id: req.params.id,
+        userId: req.body.userId,
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        description: req.body.description,
+        mainPepper: req.body.mainPepper,
+        heat: req.body.heat,
+        likes: req.body.likes,
+        dislikes: req.body.dislikes,
+        usersLiked: req.body.usersLiked,
+        usersDisliked: req.body.usersDisliked,
+      };
+    }
+    await Sauce.updateOne({ _id: req.params.id }, sauce);
+    res.status(201).json({ message: "Sauce updated" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 async function deleteSauce(req, res, next) {
   try {
