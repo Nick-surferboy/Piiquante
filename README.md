@@ -1,4 +1,4 @@
-# Piiquante (API, SSL, BRUTE-FORCE, AUTH, TOKEN, BACKEND)
+# Piiquante (API, SSL, BRUTE-FORCE, AUTH, TOKEN, MULTER, BACKEND)
 
 All the front end has been developed by OC but all the back end by myself: Nick-surferboy
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 13.2.4.
