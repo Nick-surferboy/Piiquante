@@ -43,7 +43,49 @@ async function getOneSauce(req, res, next) {
   }
 }
 
-async function like(req, res, next) {}
+async function like(req, res, next) {
+  try {
+    const userId = req.body.userId;
+    const sauce = await Sauce.findOne({ _id: req.params.id });
+
+    let likes = sauce.likes;
+    let dislikes = sauce.dislikes;
+    let usersLiked = sauce.usersLiked;
+    let usersDisliked = sauce.usersDisliked;
+
+    switch (req.body.like) {
+      case 1:
+        usersLiked.push(userId);
+        likes++;
+        console.log("1");
+        break;
+      case 0:
+        const index = sauce.usersLiked.findIndex((user) => user === userId);
+        if (index === -1) {
+          usersDisliked.splice(index, 1);
+          dislikes--;
+        } else {
+          usersLiked.splice(index, 1);
+          likes--;
+        }
+        break;
+      case -1:
+        usersDisliked.push(userId);
+        dislikes++;
+        break;
+      default:
+    }
+    sauce.likes = likes ;
+    sauce.dislikes = dislikes;
+    sauce.usersLiked = usersLiked;
+    sauce.usersDisliked = usersDisliked;
+    //update the sauce object
+    await Sauce.updateOne({ _id: req.params.id }, sauce);
+    res.status(201).json({ message: "Like updated" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+}
 
 async function updateOneSauce(req, res, next) {
   try {
