@@ -57,7 +57,6 @@ async function like(req, res, next) {
       case 1:
         usersLiked.push(userId);
         likes++;
-        console.log("1");
         break;
       case 0:
         const index = sauce.usersLiked.findIndex((user) => user === userId);
@@ -70,12 +69,12 @@ async function like(req, res, next) {
         }
         break;
       case -1:
-        usersDisliked.push(userId);
+        usersDisliked.push(userId); 
         dislikes++;
         break;
       default:
     }
-    sauce.likes = likes ;
+    sauce.likes = likes ; 
     sauce.dislikes = dislikes;
     sauce.usersLiked = usersLiked;
     sauce.usersDisliked = usersDisliked;
