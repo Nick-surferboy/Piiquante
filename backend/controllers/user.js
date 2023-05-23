@@ -44,7 +44,7 @@ async function logUserIn(req, res, next) {
     await redis.del(user.email);
     res.status(200).json({ userId: user._id, token: token });
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error.message });
   }
 }
 
