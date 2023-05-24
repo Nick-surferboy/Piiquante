@@ -4,25 +4,29 @@ const request = require("supertest");
 const app = require("../app");
 const { User, Sauce } = require("../models/models");
 
+
 let token;
 let user1Id;
 const user1 = { email: "test@test", password: "secret" };
-const sauce1 = "64661a80514e19d7e263b6b4"
+const sauce1 = "64661a80514e19d7e263b6b4";
 //const sauce1 = {
-  const sauce = {
-    userId: "",
-    name: "sauceTest",
-    manufacturer: "testManufacturer",
-    description: "testDescription",
-    mainPepper: "testPepper",
-    imageUrl: "AL_89.jpg1684429716502.jpg",
-    heat: 9,
-    likes: 2,
-    dislikes: 4,
-    usersLiked: ["sdf3434r3", "234234234"],
-    usersDisliked: ["sdfsdf"],
+const sauce = {
+  userId: "",
+  name: "sauceTest",
+  manufacturer: "testManufacturer",
+  description: "testDescription",
+  mainPepper: "testPepper",
+  imageUrl: "AL_89.jpg1684429716502.jpg",
+  heat: 9,
+  likes: 2,
+  dislikes: 4,
+  usersLiked: ["sdf3434r3", "234234234"],
+  usersDisliked: ["sdfsdf"],
   //},
 };
+
+
+
 
 afterAll(async () => {
   const email = user1.email;
@@ -30,7 +34,7 @@ afterAll(async () => {
 });
 
 describe("POST /api/auth/signup ", () => {
-  test("It should respond with a created user : status 201 ", async () => {
+  it("It should respond with a created user : status 201 ", async () => {
     const response = await request(app).post("/api/auth/signup").send(user1);
     expect(response.statusCode).toBe(201);
   });
@@ -55,8 +59,8 @@ describe("GET /api/sauces ", () => {
 describe("GET one /api/sauces/:id ", () => {
   test("It should respond with one sauce in return", async () => {
     const response = await request(app)
-    //.get(`/api/sauces/${sauce1}`).set("Authorization", `bearer ${token}`);
-    .get("/api/sauces/" + sauce1).set("Authorization", `bearer ${token}`);
+      .get("/api/sauces/" + sauce1)
+      .set("Authorization", `bearer ${token}`);
     expect(response.statusCode).toBe(200);
   });
 });
