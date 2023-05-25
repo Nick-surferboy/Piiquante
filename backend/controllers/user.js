@@ -7,18 +7,20 @@ const redis = new Redis();
 
 async function createUser(req, res, next) {
   try {
-    hash = await bcrypt.hash(req.body.password, 10);
+    let email = req.body.email;
+    const password = await bcrypt.hash(req.body.password, 10);
     const user = new User({
       email: req.body.email,
-      password: hash,
+      password: password,
     });
-    await user.save();
+    await User.create({email, password});
+    //await user.save();
     res.status(201).json({ message: "User successfully created" });
   } catch (error) {
     res.status(500).json({ error: error });
   }
 }
-
+ 
 async function logUserIn(req, res, next) {
   try {
     //User email adress check
