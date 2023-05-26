@@ -9,8 +9,7 @@ let token;
 let user1Id;
 const user1 = { email: "test@test", password: "secret" };
 const sauce1 = "64661a80514e19d7e263b6b4";
-//const sauce1 = {
-const sauce = {
+const sauce = { 
   userId: "",
   name: "sauceTest",
   manufacturer: "testManufacturer",
@@ -22,11 +21,7 @@ const sauce = {
   dislikes: 4,
   usersLiked: ["sdf3434r3", "234234234"],
   usersDisliked: ["sdfsdf"],
-  //},
 };
-
-
-
 
 afterAll(async () => {
   const email = user1.email;
@@ -38,15 +33,32 @@ describe("POST /api/auth/signup ", () => {
     const response = await request(app).post("/api/auth/signup").send(user1);
     expect(response.statusCode).toBe(201);
   });
+
+  it("It should throw an error : status 500 ", async () => {
+    const response = await request(app).post("/api/auth/signup").send({ email: "test@test" });
+    expect(response.statusCode).toBe(500);
+  });
+
 });
 
 describe("POST /api/auth/login", () => {
-  test("It should respond with a logged in user : status 200 ", async () => {
+  it("It should throw an error on user not found : status 401 ", async () => {
+    const response = await request(app).post("/api/auth/login").send({ email: "false@false", password: "secret" });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("It should throw an error on invalid password : status 401 ", async () => {
+    const response = await request(app).post("/api/auth/login").send({ email: "test@test", password: "notgood" });
+    expect(response.statusCode).toBe(401);
+  });
+
+  it("It should respond with a logged in user : status 200 ", async () => {
     const response = await request(app).post("/api/auth/login").send(user1);
     token = response.body.token;
     user1Id = response.body.userId;
     expect(response.statusCode).toBe(200);
   });
+
 });
 
 describe("GET /api/sauces ", () => {
