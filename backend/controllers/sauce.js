@@ -13,6 +13,7 @@ async function getAllSauce(req, res, next) {
 async function createSauce(req, res, next) {
   try {
     req.body.sauce = JSON.parse(req.body.sauce);
+    console.log(req.file)
     const url = req.protocol + "://" + req.get("host");
     const sauce = new Sauce({
       userId: req.body.sauce.userId,
@@ -73,6 +74,7 @@ async function like(req, res, next) {
         dislikes++;
         break;
       default:
+        res.status(400).json({ error: error.message });
     }
     sauce.likes = likes ; 
     sauce.dislikes = dislikes;
