@@ -42,7 +42,7 @@ app.use("/api/auth", userRoutes);
 app.use("/api/sauces", sauceRoutes);
 
 app.all("*", (req, res) => {
-  return res.statusCode(404).json({ error: "Route not found" });
+  return res.status(404).json({ error: "Route not found" });
 });
 
 module.exports = app;
